@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Companies;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,11 @@ class UsersFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'first_name' => $this->faker->firstName,
+            'last_name' => $this->faker->lastName,
+            'email' => $this->faker->unique()->safeEmail,
+            'password' => bcrypt('password'), // password
+            'company_code' => Companies::inRandomOrder()->first()->company_code,
         ];
     }
 }

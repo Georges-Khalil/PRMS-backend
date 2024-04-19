@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Projects;
+use App\Models\Users;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,12 @@ class ProjectMembersFactory extends Factory
      */
     public function definition(): array
     {
+        $project = Projects::inRandomOrder()->first();
+        $user = Users::inRandomOrder()->first();
+        
         return [
-            //
+            'project_id' => $project->project_id,
+            'user_id' => $user->user_id,
         ];
     }
 }
