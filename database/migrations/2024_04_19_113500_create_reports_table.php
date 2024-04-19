@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('report_title');
             $table->string('report_description');
             $table->date('start_date');
-            $table->integer('project_id');
+            $table->unsignedBigInteger('project_id');
             $table->integer('completion_percentage')->default(0);
             $table->timestamps();
 

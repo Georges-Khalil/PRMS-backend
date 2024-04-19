@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('project_members', function (Blueprint $table) {
-            $table->integer('project_id');
-            $table->integer('user_id');
+            $table->unsignedBigInteger('project_id');
+            $table->unsignedBigInteger('user_id');
 
             // Define composite primary key
             $table->primary(['project_id', 'user_id']);
