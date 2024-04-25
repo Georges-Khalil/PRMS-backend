@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Projects;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,11 @@ class ReportsFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'report_title' => $this->faker->sentence,
+            'report_description' => $this->faker->text(255),
+            'start_date' => $this->faker->date,
+            'project_id' => Projects::inRandomOrder()->first()->project_id,
+            'completion_percentage' => $this->faker->numberBetween(0, 100),
         ];
     }
 }

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('task_name');
             $table->integer('total_count')->default(0);
             $table->integer('current_count')->default(0);
-            $table->integer('report_id');
+            $table->unsignedBigInteger('report_id');
             $table->timestamps();
 
             // Define foreign key constraint to 'reports' table

@@ -17,7 +17,8 @@ class CompaniesFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'company_code' => $this->faker->unique()->randomNumber(5),
+            'company_name' => $this->faker->company,
         ];
     }
 }
