@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reports;
 use App\Http\Requests\StoreReportsRequest;
 use App\Http\Requests\UpdateReportsRequest;
+use Illuminate\Support\Facades\DB;
 
 class ReportsController extends Controller
 {
@@ -14,6 +15,15 @@ class ReportsController extends Controller
     public function index()
     {
         //
+    }
+
+    public function getReportsByProject($projectId)
+    {
+        $reports = DB::table('reports')
+        ->where('project_id', $projectId)
+            ->get();
+
+        return response()->json($reports);
     }
 
     /**

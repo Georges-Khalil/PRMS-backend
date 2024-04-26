@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class ProjectMembers extends Model
 {
+    protected $fillable = ['project_id', 'user_id'];
     use HasFactory;
 }
