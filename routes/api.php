@@ -17,3 +17,4 @@ Route::get('/user/projects', [ProjectsController::class, 'getProjects']);
 Route::get('/projects/{projectId}/reports', [ReportsController::class, 'getReportsByProject']);
 Route::get('/reports/{reportId}/tasks', [TasksController::class, 'getTasksByReport']);
 Route::post('/projects', [ProjectsController::class, 'createProject']);
+Route::post('/reports', [ReportsController::class, 'store']);

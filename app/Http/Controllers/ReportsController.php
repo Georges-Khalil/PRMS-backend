@@ -6,6 +6,7 @@ use App\Models\Reports;
 use App\Http\Requests\StoreReportsRequest;
 use App\Http\Requests\UpdateReportsRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class ReportsController extends Controller
 {
@@ -26,18 +27,36 @@ class ReportsController extends Controller
         return response()->json($reports);
     }
 
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                'report_title' => 'required',
+                'report_description' => 'required',
+                'project_id' => 'required|exists:projects,project_id',
+            ]);
+    
+            $report = Reports::create([
+                'report_title' => $request->report_title,
+                'report_description' => $request->report_description,
+                'project_id' => $request->project_id,
+                'start_date' => now(),
+                'completion_percentage' => 0,
+            ]);
+    
+            return response()->json($report, 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors(),
+            ], 422);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreReportsRequest $request)
     {
         //
     }
