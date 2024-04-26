@@ -24,6 +24,7 @@ class TasksController extends Controller
         ->leftJoin('attachments', 'tasks.task_id', '=', 'attachments.task_id')
         ->where('tasks.report_id', $reportId)
             ->select('tasks.*', 'attachments.file_name', 'attachments.file_type', 'attachments.file_size')
+            ->orderBy('tasks.current_count', 'asc')
             ->get();
 
         return response()->json($tasks);

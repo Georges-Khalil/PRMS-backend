@@ -22,6 +22,7 @@ class ReportsController extends Controller
     {
         $reports = DB::table('reports')
         ->where('project_id', $projectId)
+        ->orderBy('completion_percentage', 'asc')
             ->get();
 
         return response()->json($reports);
