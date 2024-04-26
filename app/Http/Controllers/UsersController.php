@@ -30,7 +30,7 @@ class UsersController extends Controller
         $user = Users::where('email', $request->email)->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
-            return response()->json(true);
+            return response()->json(['id' => $user->user_id]);
         }
 
         return response()->json(['message' => 'The provided credentials are incorrect.'], 401);

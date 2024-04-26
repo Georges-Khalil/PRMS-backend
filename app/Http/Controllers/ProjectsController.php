@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Projects;
 use App\Http\Requests\StoreProjectsRequest;
 use App\Http\Requests\UpdateProjectsRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ProjectsController extends Controller
 {
@@ -14,6 +16,19 @@ class ProjectsController extends Controller
     public function index()
     {
         //
+    }
+
+    public function getProjects(Request $request)
+    {
+        $userId = $request->input('user_id');
+
+        $projects = DB::table('project_members')
+            ->join('projects', 'project_members.project_id', '=', 'projects.project_id')
+            ->where('project_members.user_id', $userId)
+            ->orderBy('projects.completion_percentage', 'asc')
+            ->get();
+
+        return response()->json($projects);
     }
 
     /**
