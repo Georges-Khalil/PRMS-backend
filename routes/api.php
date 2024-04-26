@@ -18,3 +18,4 @@ Route::get('/projects/{projectId}/reports', [ReportsController::class, 'getRepor
 Route::get('/reports/{reportId}/tasks', [TasksController::class, 'getTasksByReport']);
 Route::post('/projects', [ProjectsController::class, 'createProject']);
 Route::post('/reports', [ReportsController::class, 'store']);
+Route::post('/tasks', [TasksController::class, 'store']);

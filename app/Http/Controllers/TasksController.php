@@ -6,6 +6,7 @@ use App\Models\Tasks;
 use App\Http\Requests\StoreTasksRequest;
 use App\Http\Requests\UpdateTasksRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class TasksController extends Controller
 {
@@ -28,18 +29,35 @@ class TasksController extends Controller
         return response()->json($tasks);
     }
 
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                'task_name' => 'required',
+                'total_count' => 'required|integer',
+                'report_id' => 'required|exists:reports,report_id',
+            ]);
+
+            $task = Tasks::create([
+                'task_name' => $request->task_name,
+                'total_count' => $request->total_count,
+                'report_id' => $request->report_id,
+                'current_count' => 0,
+            ]);
+
+            return response()->json($task, 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors(),
+            ], 422);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreTasksRequest $request)
     {
         //
     }
