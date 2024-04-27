@@ -54,6 +54,34 @@ class ReportsController extends Controller
         }
     }
 
+    public function update(Request $request, $reportId)
+    {
+        try {
+            $request->validate([
+                'report_title' => 'required',
+                'report_description' => 'required',
+            ]);
+    
+            $report = Reports::findOrFail($reportId);
+    
+            $report->update([
+                'report_title' => $request->report_title,
+                'report_description' => $request->report_description,
+            ]);
+    
+            return response()->json($report);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Report not found',
+            ], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -74,14 +102,6 @@ class ReportsController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Reports $reports)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateReportsRequest $request, Reports $reports)
     {
         //
     }

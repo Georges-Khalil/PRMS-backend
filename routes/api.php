@@ -20,3 +20,4 @@ Route::post('/projects', [ProjectsController::class, 'createProject']);
 Route::post('/reports', [ReportsController::class, 'store']);
 Route::post('/tasks', [TasksController::class, 'store']);
 Route::put('/projects/{id}', [ProjectsController::class, 'update']);
+Route::put('/reports/{report}', [ReportsController::class, 'update']);
