@@ -92,6 +92,54 @@ class ProjectsController extends Controller
         return response()->json(['message' => 'Project created successfully'], 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        try {
+            $member_emails = explode(',', $request->member_emails);
+    
+            $request->merge(['member_emails' => $member_emails]);
+    
+            $request->validate([
+                'project_title' => 'required',
+                'project_description' => 'required',
+                'member_emails' => 'required|array',
+                'member_emails.*' => 'exists:users,email',
+            ]);
+    
+            $project = Projects::findOrFail($id);
+    
+            $project->update([
+                'project_title' => $request->project_title,
+                'project_description' => $request->project_description,
+            ]);
+    
+            // Update the members of the project
+            DB::table('project_members')->where('project_id', $id)->delete();
+    
+            $members = DB::table('users')->whereIn('email', $request->member_emails)->get();
+    
+            foreach ($members as $member) {
+                DB::table('project_members')->insert([
+                    'project_id' => $id,
+                    'user_id' => $member->user_id,
+                    'created_at' => Carbon::now(),
+                    'updated_at' => Carbon::now(),
+                ]);
+            }
+    
+            return response()->json($project);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $e->errors(),
+            ], 422);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Project not found',
+            ], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -120,14 +168,6 @@ class ProjectsController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Projects $projects)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateProjectsRequest $request, Projects $projects)
     {
         //
     }
