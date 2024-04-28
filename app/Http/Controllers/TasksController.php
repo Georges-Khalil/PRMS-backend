@@ -55,6 +55,34 @@ class TasksController extends Controller
         }
     }
 
+    public function updateCurrentCount($taskId)
+    {
+        try {
+            $task = Tasks::findOrFail($taskId);
+            $task->increment('current_count');
+    
+            $report = $task->report;
+            $reportTasks = $report->tasks;
+            $report->completion_percentage = $reportTasks->sum('current_count') / $reportTasks->sum('total_count') * 100;
+            $report->save();
+    
+            $project = $report->project;
+            $projectReports = $project->reports;
+            $project->completion_percentage = $projectReports->avg('completion_percentage');
+            $project->save();
+    
+            return response()->json([
+                'task' => $task,
+                'report' => $report,
+                'project' => $project,
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Task not found',
+            ], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
