@@ -82,6 +82,18 @@ class ReportsController extends Controller
         }
     }
 
+    public function destroy($id)
+    {
+        $report = Reports::find($id);
+    
+        if ($report) {
+            $report->delete();
+            return response()->json(['message' => 'Report deleted successfully'], 200);
+        } else {
+            return response()->json(['error' => 'Report not found'], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -102,14 +114,6 @@ class ReportsController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Reports $reports)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Reports $reports)
     {
         //
     }

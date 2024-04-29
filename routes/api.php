@@ -22,3 +22,6 @@ Route::post('/tasks', [TasksController::class, 'store']);
 Route::put('/projects/{id}', [ProjectsController::class, 'update']);
 Route::put('/reports/{report}', [ReportsController::class, 'update']);
 Route::put('/tasks/{task}/updateCurrentCount', [TasksController::class, 'updateCurrentCount']);
+Route::delete('/tasks/{task}', [TasksController::class, 'destroy']);
+Route::delete('/reports/{report}', [ReportsController::class, 'destroy']);
+Route::delete('/projects/{project}', [ProjectsController::class, 'destroy']);

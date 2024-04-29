@@ -140,6 +140,18 @@ class ProjectsController extends Controller
         }
     }
 
+    public function destroy($id)
+    {
+        $project = Projects::find($id);
+    
+        if ($project) {
+            $project->delete();
+            return response()->json(['message' => 'Project deleted successfully'], 200);
+        } else {
+            return response()->json(['error' => 'Project not found'], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -168,14 +180,6 @@ class ProjectsController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Projects $projects)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Projects $projects)
     {
         //
     }

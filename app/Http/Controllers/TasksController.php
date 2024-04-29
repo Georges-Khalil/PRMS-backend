@@ -83,6 +83,18 @@ class TasksController extends Controller
         }
     }
 
+    public function destroy($id)
+    {
+        $task = Tasks::find($id);
+    
+        if ($task) {
+            $task->delete();
+            return response()->json(['message' => 'Task deleted successfully'], 200);
+        } else {
+            return response()->json(['error' => 'Task not found'], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -111,14 +123,6 @@ class TasksController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdateTasksRequest $request, Tasks $tasks)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tasks $tasks)
     {
         //
     }
