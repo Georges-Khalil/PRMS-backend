@@ -6,6 +6,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\TasksController;
+use App\Http\Controllers\AttachmentsController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,3 +26,5 @@ Route::put('/tasks/{task}/updateCurrentCount', [TasksController::class, 'updateC
 Route::delete('/tasks/{task}', [TasksController::class, 'destroy']);
 Route::delete('/reports/{report}', [ReportsController::class, 'destroy']);
 Route::delete('/projects/{project}', [ProjectsController::class, 'destroy']);
+Route::get('/tasks/{task}/attachments', [AttachmentsController::class, 'getAttachments']);
+Route::post('/tasks/{task}/addAttachments', [AttachmentsController::class, 'addAttachment']);

@@ -15,4 +15,8 @@ class Tasks extends Model
     {
         return $this->belongsTo(Reports::class, 'report_id', 'report_id');
     }
+    public function attachments()
+    {
+        return $this->hasMany(Attachments::class, 'task_id', 'task_id');
+    }
 }
