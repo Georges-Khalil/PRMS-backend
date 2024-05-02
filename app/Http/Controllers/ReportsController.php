@@ -94,6 +94,21 @@ class ReportsController extends Controller
         }
     }
 
+    public function getReport($reportId)
+    {
+        try {
+            $report = Reports::findOrFail($reportId);
+    
+            return response()->json([
+                'report' => $report,
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Report not found',
+            ], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */

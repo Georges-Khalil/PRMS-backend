@@ -28,3 +28,5 @@ Route::delete('/reports/{report}', [ReportsController::class, 'destroy']);
 Route::delete('/projects/{project}', [ProjectsController::class, 'destroy']);
 Route::get('/tasks/{task}/attachments', [AttachmentsController::class, 'getAttachments']);
 Route::post('/tasks/{task}/addAttachments', [AttachmentsController::class, 'addAttachment']);
+Route::get('/projects/{project}/details', [ProjectsController::class, 'getProject']);
+Route::get('/reports/{report}/details', [ReportsController::class, 'getReport']);

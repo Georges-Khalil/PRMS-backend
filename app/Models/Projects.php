@@ -15,4 +15,9 @@ class Projects extends Model
     {
         return $this->hasMany(Reports::class, 'project_id', 'project_id');
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Companies::class, 'company_code', 'company_code');
+    }
 }

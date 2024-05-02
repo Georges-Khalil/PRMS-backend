@@ -152,6 +152,21 @@ class ProjectsController extends Controller
         }
     }
 
+    public function getProject($projectId)
+    {
+        try {
+            $project = Projects::findOrFail($projectId);
+
+            return response()->json([
+                'project' => $project,
+            ]);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Project not found',
+            ], 404);
+        }
+    }
+
     /**
      * Show the form for creating a new resource.
      */
