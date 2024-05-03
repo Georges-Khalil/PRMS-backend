@@ -20,4 +20,9 @@ class Projects extends Model
     {
         return $this->belongsTo(Companies::class, 'company_code', 'company_code');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(Users::class, 'project_members', 'project_id', 'user_id');
+    }
 }

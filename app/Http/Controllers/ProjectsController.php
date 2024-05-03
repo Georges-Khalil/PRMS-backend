@@ -155,10 +155,12 @@ class ProjectsController extends Controller
     public function getProject($projectId)
     {
         try {
-            $project = Projects::findOrFail($projectId);
-
+            $project = Projects::with('users')->findOrFail($projectId);
+            $userEmails = $project->users->pluck('email')->implode(',');
+    
             return response()->json([
                 'project' => $project,
+                'user_emails' => $userEmails,
             ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json([
