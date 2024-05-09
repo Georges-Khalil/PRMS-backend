@@ -118,8 +118,12 @@ class TasksController extends Controller
         try {
             $request->validate([
                 'task_name' => 'required',
-                'total_count' => 'required|integer|min:0',
-                'current_count' => 'required|integer|min:0|lte:total_count',
+                'total_count' => ['required', 'integer', 'min:0', function ($attribute, $value, $fail) use ($request) {
+                    if ($value < $request->current_count) {
+                        $fail($attribute.' must be greater than or equal to current count.');
+                    }
+                }],
+                'current_count' => 'required|integer|min:0',
             ]);
     
             $task = Tasks::findOrFail($id);
