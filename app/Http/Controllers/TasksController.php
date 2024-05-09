@@ -94,9 +94,15 @@ class TasksController extends Controller
     public function destroy($id)
     {
         $task = Tasks::find($id);
-    
+
         if ($task) {
+            $report = $task->report;
+            $project = $report->project;
+
             $task->delete();
+
+            $this->updateCompletionPercentagesAfterDelete($report, $project);
+
             return response()->json(['message' => 'Task deleted successfully'], 200);
         } else {
             return response()->json(['error' => 'Task not found'], 404);
@@ -154,6 +160,25 @@ class TasksController extends Controller
         $project->completion_percentage = $projectReports->avg('completion_percentage');
         $project->save();
     }
+
+    private function updateCompletionPercentagesAfterDelete($report, $project)
+{
+    $reportTasks = $report->tasks;
+    if ($reportTasks->count() > 0) {
+        $report->completion_percentage = $reportTasks->sum('current_count') / $reportTasks->sum('total_count') * 100;
+    } else {
+        $report->completion_percentage = 0;
+    }
+    $report->save();
+
+    $projectReports = $project->reports;
+    if ($projectReports->count() > 0) {
+        $project->completion_percentage = $projectReports->avg('completion_percentage');
+    } else {
+        $project->completion_percentage = 0;
+    }
+    $project->save();
+}
 
     /**
      * Show the form for creating a new resource.
