@@ -30,3 +30,5 @@ Route::get('/tasks/{task}/attachments', [AttachmentsController::class, 'getAttac
 Route::post('/tasks/{task}/addAttachments', [AttachmentsController::class, 'addAttachment']);
 Route::get('/projects/{project}/details', [ProjectsController::class, 'getProject']);
 Route::get('/reports/{report}/details', [ReportsController::class, 'getReport']);
+Route::get('/tasks/{id}', [TasksController::class, 'getTask']);
+Route::put('/tasks/{id}/update', [TasksController::class, 'updateTask']);
