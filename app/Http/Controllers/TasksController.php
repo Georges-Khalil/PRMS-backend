@@ -34,7 +34,7 @@ class TasksController extends Controller
         try {
             $request->validate([
                 'task_name' => 'required',
-                'total_count' => 'required|integer|min:1',
+                'total_count' => 'required|integer|min:0',
                 'report_id' => 'required|exists:reports,report_id',
             ]);
     
@@ -44,6 +44,8 @@ class TasksController extends Controller
                 'report_id' => $request->report_id,
                 'current_count' => 0,
             ]);
+    
+            $this->updateCompletionPercentages($task);
     
             return response()->json($task, 201);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -122,6 +124,9 @@ class TasksController extends Controller
     
             $task = Tasks::findOrFail($id);
             $task->update($request->only(['task_name', 'total_count', 'current_count']));
+    
+            $this->updateCompletionPercentages($task);
+    
             return response()->json($task);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
@@ -131,6 +136,19 @@ class TasksController extends Controller
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response()->json(['error' => 'Task not found'], 404);
         }
+    }
+
+    private function updateCompletionPercentages($task)
+    {
+        $report = $task->report;
+        $reportTasks = $report->tasks;
+        $report->completion_percentage = $reportTasks->sum('current_count') / $reportTasks->sum('total_count') * 100;
+        $report->save();
+
+        $project = $report->project;
+        $projectReports = $project->reports;
+        $project->completion_percentage = $projectReports->avg('completion_percentage');
+        $project->save();
     }
 
     /**
